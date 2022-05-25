@@ -1,0 +1,161 @@
+      tree = html.fromstring(page.text)
+       """" clock = tree.xpath('/html/body/div[1]/main/div[2]/main/div[1]/section/div[2]/details[' + str(clockCount) + ']/summary/div/div/h2')[0]  # details sayısını artırdıkça artar
+        print(clock)
+        temp = tree.xpath('/html/body/div[1]/main/div[2]/main/div[1]/section/div[2]/details[' + str(clockCount) +']/summary/div/div/div[1]/span')[0]# details sayısını artırdıkça artar
+        tempValue = temp.text
+        sky = tree.xpath('/html/body/div[1]/main/div[2]/main/div[1]/section/div[2]/details[' + str(clockCount) +']/summary/div/div/div[2]/span')[0]# details sayısını artırdıkça artar
+        skyValue = sky.text
+        chanceOfRain = tree.xpath('/html/body/div[1]/main/div[2]/main/div[1]/section/div[2]/details[' + str(clockCount) +']/summary/div/div/div[3]/span')[0]# details sayısını artırdıkça artar
+        chanceOfRainValue = chanceOfRain.text
+        windSpeed = tree.xpath('/html/body/div[1]/main/div[2]/main/div[1]/section/div[2]/details[' + str(clockCount) +']/summary/div/div/div[4]/span')[0]# details sayısını artırdıkça artar
+        windSpeedValue = windSpeed.text_content()""""
+        print( "\n" + clockValue + "\t"+ tempValue + "\t"+ skyValue + "\t"+ chanceOfRainValue + "\t"+ windSpeedValue )
+
+
+
+
+for x in range(1, (24-int(splitTimeArray[0]))):
+        HourlyWeather(x)
+
+"""clock = tree.find_all('details',attrs={"class" : "DaypartDetails--DayPartDetail--1up3g Disclosure--themeList--25Q0H", "id":"detailIndex1"})[0].find_all('h2')[0]
+print(clock.text)
+"""
+
+########################################
+
+        clockValue = weatherData.find_all('h2')[0].text
+        tempValue = weatherData.find_all('span', attrs= {"class":"DetailsSummary--tempValue--1K4ka"})[0].text
+        skyValue = weatherData.find_all('span', attrs= {"class":"DetailsSummary--extendedData--365A_"})[0].text
+        chanceOfRain = weatherData.find_all('span', attrs= {"data-testid":"PercentageValue"})[0].text
+        windSpeed = weatherData.find_all('span', attrs= {"data-testid":"Wind", "class":"Wind--windWrapper--3aqXJ undefined"})[0].text
+
+##################################################################################################################################
+
+
+
+import requests
+from bs4 import BeautifulSoup
+
+from lxml import html
+
+headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
+page = requests.get(
+        'https://weather.com/tr-TR/weather/hourbyhour/l/6bf04abe930676d1bedda3f1ff34714ba5459168908b9cc6b3a33983650e45a5',
+        headers=headers)
+tree =BeautifulSoup(page.text, 'html.parser')
+
+infoTag = tree.find_all('h1',attrs={ "class":"LocationPageTitle--PageHeader--1a5x1 HourlyForecast--CardHeader--2bpTn"})[0]# details sayısını artırdıkça artar
+cityValue = infoTag.find_all("span", attrs={"data-testid":"PresentationName", "class":"LocationPageTitle--PresentationName--1QYny"})[0]
+print(cityValue.text)
+
+updatedTimeTag = tree.find_all('div',attrs={ "class":"HourlyForecast--timestamp--MVnBF"})[0]# details sayısını artırdıkça artar
+updatedTimeValue = updatedTimeTag.text
+splitTimeArray = updatedTimeValue.split(":")
+print(updatedTimeValue)
+
+day = tree.find_all('div',attrs={ "class":"HourlyForecast--DisclosureList--3CdxR"})[0]# details sayısını artırdıkça artar
+dayValue = day.find_all("h3", attrs={"id":"currentDateId0", "class":"HourlyForecast--longDate--1tdaJ"})[0]
+print(dayValue.text)
+
+
+def HourlyWeather(index):
+
+        weatherData = tree.find_all('details',attrs={ "id":"detailIndex" + str(index) + ""})[0]
+
+        clockValue = weatherData.find_all('h2')[0].text
+        tempValue = weatherData.find_all('span', attrs= {"class":"DetailsSummary--tempValue--1K4ka"})[0].text
+        skyValue = weatherData.find_all('span', attrs= {"class":"DetailsSummary--extendedData--365A_"})[0].text
+        chanceOfRain = weatherData.find_all('span', attrs= {"data-testid":"PercentageValue"})[0].text
+        windSpeed = weatherData.find_all('span', attrs= {"data-testid":"Wind", "class":"Wind--windWrapper--3aqXJ undefined"})[0].text
+
+
+        print( clockValue + " " +tempValue + " " + skyValue + " " + chanceOfRain + " "+ windSpeed)
+
+
+for i in range(0,(23-int(splitTimeArray[0]))):
+        HourlyWeather(i)
+
+###############################################################################################################
+
+
+
+--<svg> gbi etiketleri silen fonksiyon yazılacak
+
+
+
+
+--hepsi try catch bloklarına alınacak.
+
+
+
+
+ÖĞRENİLENLER :
+
+--Html.Element'i decode(str ye çevirmek) etmek için yani :  unicode(valueTemp.text_content()); kütüphane =  from lxml.html.clean import unicode
+
+--tag.getparent().remove(tag)
+
+
+#############################################################
+
+import sys
+import mysql.connector
+def Connecting():
+    try:
+          mydb = mysql.connector.connect(
+          host="localhost",
+          user="root",
+          password="",
+          database = "armaweather"
+        )
+
+    except:
+        print("Database Çalışmıyor.")
+        sys.exit(1)
+    return mydb
+
+##################################################################
+
+from  database import connection
+
+def CreateTable (coloumnName):
+    table_name = 'weatherdata'
+    ddl = ""
+    for col in coloumnName:
+        ddl += "`{}` text,".format(col)
+
+    connect = connection.Connecting()
+    mycursor =connect.cursor()
+    sql_create = "CREATE TABLE IF NOT EXISTS `{}` ({}) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;".format(table_name, ddl[:-1])
+    mycursor.execute(sql_create)
+    print(coloumnName)
+    print(ddl)
+    print(sql_create)
+
+def InsertDict(valuesName):
+    ddliki = ""
+    for val in valuesName:
+        ddliki += "'{}' ,".format(val)
+    sql = "INSERT INTO `weatherdata`  VALUES ({}) ;".format(ddliki[:-1])
+    print(sql)
+    connect = connection.Connecting()
+    mycursor = connect.cursor()
+    mycursor.execute(sql)
+    connect.commit()
+    mycursor.close()
+
+    ####################
+
+    npm install node-python
+    pip install requests
+    pip install BeautifulSoup4
+
+    myJson = json.dumps(allDict, indent=5, ensure_ascii=True, sort_keys=True) # Dicti JSON'açevirme (ensure ascii=True olacak buna 1 gün uğraştım)
+
+##################################################
+
+fastify.register(require('fastify-cors'), {
+  origin: '*',
+  methods: ['GET'],
+}); // bunu yazmayı unutma

@@ -1,0 +1,15 @@
+{
+  
+  "dependencies": {
+  
+    
+  "fastify": "^3.27.1",
+  
+    
+  "fastify-cors": "^6.0.2",
+  
+    
+  "save": "^2.4.0"
+  
+  }
+}
